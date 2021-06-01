@@ -1,32 +1,30 @@
-import React, { useState, createContext, useContext } from 'react'
-import { v4 as uuidv4 } from 'uuid';
+//using context with useReducer
+
+import React, { useEffect, createContext, useContext, useReducer } from 'react'
+import {TaskReducer} from '../Reducer/TaskReducer'
 
 const TasksContext = createContext()
 
 export const useTasksContext = () => useContext(TasksContext)
 
 export const TasksContextProvider = ({children}) => {
-    
-    const [tasks, setTasks] = useState([
-        {task: 'Do something', id: 1}, 
-        {task: 'Do some other thing', id: 2}
-    ])
 
-    const addTask = (task) => {
-        setTasks([
-                  ...tasks,
-            {task: task , id: uuidv4()}
-        ])
-    }
-    
-    const removeTask = (id) => {
-        setTasks(tasks.filter(task => task.id !== id))
-    }
+    //requires a reducer and intial state. dispatch will help in the action that needs to be perform.
+    const [tasks, dispatch] = useReducer(TaskReducer, [] ,
+        //third argument to retrieve the stored data in localstorage. if data is there initialize it, otherwise empty array.
+        () => {
+        const localStore = localStorage.getItem('tasks')
+        return localStore ? JSON.parse(localStore): [] ;
+    }) 
    
-    const values = {tasks , addTask, removeTask}
+    // to add the data in localstorage
+    useEffect(() => {
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }, [tasks])
 
+    
     return (
-        <TasksContext.Provider value= {values}>
+        <TasksContext.Provider value= {{tasks, dispatch}}>
                 {children}
         </TasksContext.Provider>
     )

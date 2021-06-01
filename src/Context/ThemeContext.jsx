@@ -1,16 +1,17 @@
+//using context with useState
+
 import React, { useState, createContext, useContext } from 'react'
 
 const ThemeContext = createContext()
 
-export const useThemeContext = () => useContext(ThemeContext)
+export const useThemeContext = () => useContext(ThemeContext) //this will help consuming the context on diff components
 
 export const ThemeContextProvider = ({children}) => {
-
       
     const [theme, setTheme] = useState({
         isLightTheme : true,
-        light : {syntax:'#555' , ui:'#ddd' , bg:'#eee'} ,
-        dark : {syntax:'#ddd' , ui:'#333' , bg:'#555'}
+        light : {ui:'#555', bg:'#eee'} ,
+        dark : {ui:'#ddd', bg:'#555'}
     })
 
     const toggleTheme = () => {
@@ -21,7 +22,7 @@ export const ThemeContextProvider = ({children}) => {
 
     return (
         <ThemeContext.Provider value= {values}>
-                {children}
+                {children} {/* every component will have access to the context */}
         </ThemeContext.Provider>
     )
 }

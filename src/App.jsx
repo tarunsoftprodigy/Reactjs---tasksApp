@@ -5,11 +5,11 @@ import {TasksContextProvider} from './Context/TasksContext'
 function App() {
  
   return (
-    <div className="App">
-      <TasksContextProvider>  
+    <>
+      <TasksContextProvider>  { /* to make context accessible to all the components whenever required */}
         <Homepage />
       </TasksContextProvider>
-    </div>
+    </>
   )
 }
 

@@ -3,21 +3,22 @@ import { useTasksContext } from '../Context/TasksContext'
 
 const AddTaskForm = () => {
      const taskRef = useRef()
-     const {addTask} = useTasksContext()
+     const {dispatch} = useTasksContext() //consuming taskcontext here
      
      const handleSubmit = (e) => {
         e.preventDefault()
-        addTask(taskRef.current.value);
+        dispatch({type: 'ADD_TASK', task : taskRef.current.value}) //sending payload to perform action
         taskRef.current.value = ''
     }
     return (
-        <>
-           <form onSubmit={handleSubmit}>
+        <>  
+           <form className="addtaskform" onSubmit={handleSubmit}>
+                <h3>Add your tasks here</h3>
                <input 
                 type="text" 
                 name='task'
                 ref = {taskRef}
-                placeholder="add task here.."
+                placeholder="..."
                 required
                 />
                 <button>Add</button>

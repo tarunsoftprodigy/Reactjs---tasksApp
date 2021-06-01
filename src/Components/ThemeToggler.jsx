@@ -5,7 +5,7 @@ const ThemeToggler = () => {
     const {isLightTheme} = theme;
     return (
         <>
-         <button onClick={toggleTheme}> {isLightTheme ? 'Light' : 'Dark'} </button>
+         <button className={`theme-toggler ${isLightTheme}`} onClick={toggleTheme}> {isLightTheme ? 'Dark' : 'Light'} </button>
         </>
     )
 }
