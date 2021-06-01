@@ -1,6 +1,6 @@
 //using context with useState
 
-import React, { useState, createContext, useContext } from 'react'
+import React, { useEffect, useState, createContext, useContext } from 'react'
 
 const ThemeContext = createContext()
 
@@ -9,15 +9,27 @@ export const useThemeContext = () => useContext(ThemeContext) //this will help c
 export const ThemeContextProvider = ({children}) => {
       
     const [theme, setTheme] = useState({
-        isLightTheme : true,
+        isLightTheme : null ,
         light : {ui:'#555', bg:'#eee'} ,
         dark : {ui:'#ddd', bg:'#555'}
+    }, () => {
+      const storedTheme = localStorage.getItem('theme')
+      return storedTheme ? JSON.parse(storedTheme) : true
     })
+
+    useEffect(() => {
+      const storedTheme = localStorage.getItem('theme')
+      setTheme({...theme, isLightTheme : storedTheme ? JSON.parse(storedTheme) : true})
+    }, [])
 
     const toggleTheme = () => {
       setTheme({...theme, isLightTheme : !theme.isLightTheme})
     }
-   
+
+    useEffect(() => {
+       localStorage.setItem('theme', JSON.stringify(theme.isLightTheme))
+    }, [theme])
+    
     const values = {theme, toggleTheme}
 
     return (
